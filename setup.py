@@ -18,6 +18,7 @@ setup(
 
     install_requires = [
         "cement",
+        "twisted",
         "setuptools",
     ],
 
