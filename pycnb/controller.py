@@ -4,7 +4,6 @@
 import logging
 log = logging.getLogger(__name__)
 
-import re
 from cement.core import foundation, controller, handler
 from pprint import pprint
 
@@ -35,9 +34,9 @@ class DailyRatesProtocol(Protocol):
     def connectionLost(self, reason):
         log.debug('Finished receiving body:', reason.getErrorMessage())
 
-        lines = re.split("\n", self.data)
+        lines = self.data.splitlines()
         data = lines[2:-1] # 1st 2 lines is header
-        parsed = (re.split("\|", i) for i in data)
+        parsed = (i.split("|") for i in data)
         interesting = ((i[3],i[4]) for i in parsed if i[3] in self.codes)
 
         self.finished.callback(interesting)
