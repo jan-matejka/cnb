@@ -67,4 +67,4 @@ class MainController(controller.CementBaseController):
         reactor.run()
 
     def _gotRates(self, rates):
-        [pprint(x) for x in rates]
+        for x in rates: pprint(x)
