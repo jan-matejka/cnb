@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import setup, find_packages
-import pycnb
+
+__version__ = '0.0.2'
 
 setup(
     name='pycnb',
-    version=pycnb.__version__,
+    version=__version__,
     description='pycnb',
     author='Jan Matejka',
     author_email='yac@blesmrt.net',
