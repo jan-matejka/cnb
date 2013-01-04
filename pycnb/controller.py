@@ -3,46 +3,60 @@
 
 import logging
 log = logging.getLogger(__name__)
+# log commented out because it breaks
 
 from cement.core import foundation, controller, handler
 from pprint import pprint
+from decimal import Decimal
 
 from twisted.internet import reactor
 from twisted.web.client import Agent
 from twisted.web.http_headers import Headers
 from twisted.internet import defer
 from twisted.internet.protocol import Protocol
+from twisted.protocols.basic import LineReceiver
 
-class DailyRatesProtocol(Protocol):
-    def __init__(self, response, codes):
+class DailyRatesProtocol(LineReceiver):
+    delimiter = '\n'
+
+    def __init__(self):
         self.deferred = defer.Deferred()
-        self.codes = codes
 
-        self.remaining = 1024 * 10
-        self.data = ""
-        response.deliverBody(self)
+        self.line_no = 0
+        self.rates = {}
 
-    def dataReceived(self, bytes):
-        if not self.remaining:
+    def lineReceived(self, line):
+        if self.line_no < 2:
+            # 1st 2 lines is header
+            self.line_no += 1
             return
 
-        chunk = bytes[:self.remaining]
-
-        log.debug('Some data received:')
-        log.debug(chunk)
-
-        self.data += chunk
-        self.remaining -= len(chunk)
+        cols = line.split("|")
+        self.rates[cols[3]] = Decimal(cols[4].replace(',', '.'))
 
     def connectionLost(self, reason):
-        log.debug('Finished receiving body:', reason.getErrorMessage())
+        self.deferred.callback(self)
 
-        lines = self.data.splitlines()
-        data = lines[2:-1] # 1st 2 lines is header
-        parsed = (i.split("|") for i in data)
-        interesting = ((i[3],i[4]) for i in parsed if i[3] in self.codes)
+def getRates(cb):
+    agent = Agent(reactor)
+    url = 'http://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.txt'
 
-        self.deferred.callback(interesting)
+    d = agent.request(
+        'GET',
+        url,
+        Headers({'User-Agent': ['Twisted Web Client Example']}))
+
+    def a(r):
+        drp = DailyRatesProtocol()
+        r.deliverBody(drp)
+        return drp.deferred
+
+    d.addCallback(lambda response: a(response))
+    d.addCallback(cb)
+    d.addErrback(log.error)
+    d.addBoth(lambda x: reactor.stop())
+
+    reactor.run()
 
 class MainController(controller.CementBaseController):
     class Meta:
@@ -50,21 +64,9 @@ class MainController(controller.CementBaseController):
 
     @controller.expose()
     def default(self):
-        agent = Agent(reactor)
-        url = 'http://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.txt'
+        getRates(self._gotRates)
 
-        d = agent.request(
-            'GET',
-            url,
-            Headers({'User-Agent': ['Twisted Web Client Example']}))
-
-        d.addCallback(lambda response: DailyRatesProtocol(response, ["EUR", "USD"]).deferred)
-        d.addCallback(self._gotRates)
-        d.addErrback(log.error)
-        d.addBoth(lambda x: reactor.stop())
-
-        reactor.run()
-
-    def _gotRates(self, rates):
-        for x in rates: pprint(x)
+    def _gotRates(self, drp):
+        [pprint(i) for i in drp.rates.items()
+            if i[0] in ["EUR", "USD"]]
 
