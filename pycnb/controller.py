@@ -35,7 +35,7 @@ class DailyRatesProtocol(LineReceiver):
         self.rates[cols[3]] = Decimal(cols[4].replace(',', '.'))
 
     def connectionLost(self, reason):
-        self.deferred.callback(self)
+        self.deferred.callback(self.rates)
 
 def getRates(cb):
     agent = Agent(reactor)
@@ -64,7 +64,7 @@ class MainController(controller.CementBaseController):
     def default(self):
         getRates(self._gotRates)
 
-    def _gotRates(self, drp):
-        [pprint(i) for i in drp.rates.items()
+    def _gotRates(self, rates):
+        [pprint(i) for i in rates.items()
             if i[0] in ["EUR", "USD"]]
 
