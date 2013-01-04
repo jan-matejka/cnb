@@ -7,15 +7,15 @@ Usage
 =====
 
 ::
+
     >>> from pycnb import EUR
     >>> EUR
     Decimal('25.260')
 
 You can use any currency identificator which is published by CNB instead of the EUR.
 
-Also you can just run
+Also you can just run::
 
-::
     $ pycnb
     ('USD', Decimal('19.279'))
     ('EUR', Decimal('25.260'))
