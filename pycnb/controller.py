@@ -46,13 +46,11 @@ def getRates(cb):
         url,
         Headers({'User-Agent': ['Twisted Web Client Example']}))
 
-    def a(r):
-        drp = DailyRatesProtocol()
-        r.deliverBody(drp)
-        return drp.deferred
+    drp = DailyRatesProtocol()
+    drp.deferred.addCallback(cb)
 
-    d.addCallback(lambda response: a(response))
-    d.addCallback(cb)
+    d.addCallback(lambda r: r.deliverBody(drp))
+    d.addCallback(lambda _: drp.deferred)
     d.addErrback(log.error)
     d.addBoth(lambda x: reactor.stop())
 
