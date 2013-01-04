@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
-
-from .controller import getRates
+from .protocol import get_rates
 
 class Wrapper(object):
     def __init__(self, wrapped):
@@ -18,7 +17,7 @@ class Wrapper(object):
             return getattr(self.wrapped, name)
         except AttributeError:
             if not self.rates:
-                getRates(self.set_rates)
+                get_rates(self.set_rates)
             return self.rates[name]
 
 sys.modules[__name__] = Wrapper(sys.modules[__name__])

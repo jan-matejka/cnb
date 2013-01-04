@@ -3,17 +3,13 @@
 
 import logging
 log = logging.getLogger(__name__)
-# log commented out because it breaks
 
-from cement.core import foundation, controller, handler
-from pprint import pprint
 from decimal import Decimal
 
 from twisted.internet import reactor
 from twisted.web.client import Agent
 from twisted.web.http_headers import Headers
 from twisted.internet import defer
-from twisted.internet.protocol import Protocol
 from twisted.protocols.basic import LineReceiver
 
 class DailyRatesProtocol(LineReceiver):
@@ -37,14 +33,14 @@ class DailyRatesProtocol(LineReceiver):
     def connectionLost(self, reason):
         self.deferred.callback(self.rates)
 
-def getRates(cb):
+def get_rates(cb):
     agent = Agent(reactor)
     url = 'http://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.txt'
 
     d = agent.request(
         'GET',
         url,
-        Headers({'User-Agent': ['Twisted Web Client Example']}))
+        Headers({'User-Agent': ['PyCNB']}))
 
     drp = DailyRatesProtocol()
     drp.deferred.addCallback(cb)
@@ -55,16 +51,3 @@ def getRates(cb):
     d.addBoth(lambda x: reactor.stop())
 
     reactor.run()
-
-class MainController(controller.CementBaseController):
-    class Meta:
-        description = 'PyCNB entry point'
-
-    @controller.expose()
-    def default(self):
-        getRates(self._gotRates)
-
-    def _gotRates(self, rates):
-        [pprint(i) for i in rates.items()
-            if i[0] in ["EUR", "USD"]]
-
