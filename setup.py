@@ -25,4 +25,16 @@ setup(
 
     entry_points = {
         'console_scripts': ['pycnb = pycnb.core:main']},
+
+    classifiers=[
+        "Operating System :: POSIX",
+        "License :: OSI Approved :: BSD License",
+        "Programming Language :: Python",
+        "Development Status :: 4 - Beta",
+        "Framework :: Twisted",
+        "Intended Audience :: End Users/Desktop",
+        "Natural Language :: English",
+        "Environment :: Console",
+        "Topic :: Utilities",
+    ],
 )
