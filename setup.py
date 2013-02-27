@@ -8,7 +8,7 @@ __version__ = '0.0.3'
 setup(
     name='pycnb',
     version=__version__,
-    description='pycnb',
+    description='Library, CLI and Twisted protocol for `Czech National Bank daily rates',
     author='Jan Matejka',
     author_email='yac@blesmrt.net',
     url='https://github.com/yaccz/pycnb',

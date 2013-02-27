@@ -1,7 +1,7 @@
 PyCNB
 ======
 
-Twisted protocol for `Czech National Bank daily rates <http://www.cnb.cz/cs/index.html>`_.
+Library, CLI and Twisted protocol for `Czech National Bank daily rates <http://www.cnb.cz/cs/index.html>`_.
 
 Usage
 =====
