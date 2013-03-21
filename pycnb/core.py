@@ -7,6 +7,7 @@ log = logging.getLogger(__name__)
 from cement.core import foundation, handler, controller
 from pprint import pprint
 from .protocol import get_rates
+from twisted.internet import reactor
 
 class MainController(controller.CementBaseController):
     class Meta:
@@ -14,7 +15,9 @@ class MainController(controller.CementBaseController):
 
     @controller.expose()
     def default(self):
-        get_rates(self._gotRates)
+        d = get_rates(self._gotRates, reactor)
+        d.addBoth(lambda x: reactor.stop())
+        reactor.run()
 
     def _gotRates(self, rates):
         [pprint(i) for i in rates.items()

@@ -6,11 +6,13 @@ log = logging.getLogger(__name__)
 
 from decimal import Decimal
 
-from twisted.internet import reactor
 from twisted.web.client import Agent
 from twisted.web.http_headers import Headers
 from twisted.internet import defer
 from twisted.protocols.basic import LineReceiver
+
+RATES_URL = 'http://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.txt'
+
 
 class DailyRatesProtocol(LineReceiver):
     delimiter = '\n'
@@ -33,10 +35,9 @@ class DailyRatesProtocol(LineReceiver):
     def connectionLost(self, reason):
         self.deferred.callback(self.rates)
 
-def get_rates(cb):
+def get_rates(cb, reactor):
     agent = Agent(reactor)
-    url = 'http://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.txt'
-
+    url = RATES_URL
     d = agent.request(
         'GET',
         url,
@@ -48,6 +49,4 @@ def get_rates(cb):
     d.addCallback(lambda r: r.deliverBody(drp))
     d.addCallback(lambda _: drp.deferred)
     d.addErrback(log.error)
-    d.addBoth(lambda x: reactor.stop())
-
-    reactor.run()
+    return d
