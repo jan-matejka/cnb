@@ -35,7 +35,7 @@ class DailyRatesProtocol(LineReceiver):
     def connectionLost(self, reason):
         self.deferred.callback(self.rates)
 
-def get_rates(cb, reactor):
+def get_rates(reactor):
     agent = Agent(reactor)
     url = RATES_URL
     d = agent.request(
@@ -44,7 +44,6 @@ def get_rates(cb, reactor):
         Headers({'User-Agent': ['PyCNB']}))
 
     drp = DailyRatesProtocol()
-    drp.deferred.addCallback(cb)
 
     d.addCallback(lambda r: r.deliverBody(drp))
     d.addCallback(lambda _: drp.deferred)

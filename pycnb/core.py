@@ -18,18 +18,17 @@ class MainController(controller.CementBaseController):
             (['-i', '--interactive'], dict(action='store_true')),
         ]
 
-    def get_cb(self):
+    def get_callbacks(self):
         if self.pargs.interactive:
-            return self.create_namespace
+            return [self.create_namespace, self.interact]
         else:
-            return self.print_all
+            return [self.print_all]
 
     @controller.expose()
     def default(self):
-        d = get_rates(self.get_cb(), reactor)
-
-        if self.pargs.interactive:
-            d.addCallback(self.interact)
+        d = get_rates(reactor)
+        for cb in self.get_callbacks():
+            d.addCallback(cb)
 
         d.addBoth(lambda x: reactor.stop())
         reactor.run()
