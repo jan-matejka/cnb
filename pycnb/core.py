@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+
 import logging
 log = logging.getLogger(__name__)
 
@@ -20,8 +22,7 @@ class MainController(controller.CementBaseController):
         reactor.run()
 
     def _gotRates(self, rates):
-        [pprint(i) for i in rates.items()
-            if i[0] in ["EUR", "USD"]]
+        [print("{0} {1}".format(*i)) for i in rates.items()]
 
 class PyCNBApp(foundation.CementApp):
     class Meta:
