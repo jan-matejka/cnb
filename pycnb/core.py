@@ -5,6 +5,8 @@ from __future__ import print_function
 from pprint import pprint
 import code
 from decimal import Decimal
+import readline
+from rlcompleter import Completer
 
 from cement.core import foundation, handler, controller
 from twisted.internet import reactor
@@ -39,6 +41,9 @@ class MainController(controller.CementBaseController):
         return ns
 
     def interact(self, ns):
+        c = Completer(ns)
+        readline.set_completer(c.complete)
+        readline.parse_and_bind("tab: complete")
         code.interact(local=ns)
 
     def print_all(self, rates):
