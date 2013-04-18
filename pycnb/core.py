@@ -15,7 +15,7 @@ from pycnb import version
 
 class MainController(controller.CementBaseController):
     class Meta:
-        description = 'PyCNB entry point'
+        description = 'Access cnb.cz daily rates with the comfort of your command line'
         arguments = [
             (['-i', '--interactive'], dict(action='store_true')),
             (['-v', '--version'], dict(action='store_true')),
