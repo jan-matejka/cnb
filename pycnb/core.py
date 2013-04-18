@@ -35,8 +35,7 @@ class MainController(controller.CementBaseController):
         d.addBoth(lambda x: reactor.stop())
         reactor.run()
 
-    def create_namespace(self, rates):
-        ns = dict(rates.items())
+    def create_namespace(self, ns):
         ns['D'] = Decimal
         return ns
 
@@ -47,7 +46,8 @@ class MainController(controller.CementBaseController):
         code.interact(local=ns)
 
     def print_all(self, rates):
-        [print("{0} {1}".format(*i)) for i in rates.items()]
+        for c,r in rates.items():
+            print("{currency} {rate}".format(currency=c, rate=r))
 
 class PyCNBApp(foundation.CementApp):
     class Meta:
