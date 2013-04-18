@@ -11,8 +11,11 @@ from twisted.web.http_headers import Headers
 from twisted.internet import defer
 from twisted.protocols.basic import LineReceiver
 
+from pycnb import version
+
 RATES_URL = 'http://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.txt'
 
+USER_AGENT = 'PyCNB ({0})'.format(version)
 
 class DailyRatesProtocol(LineReceiver):
     delimiter = '\n'
@@ -41,7 +44,7 @@ def get_rates(reactor):
     d = agent.request(
         'GET',
         url,
-        Headers({'User-Agent': ['PyCNB']}))
+        Headers({'User-Agent': [USER_AGENT]}))
 
     drp = DailyRatesProtocol()
 

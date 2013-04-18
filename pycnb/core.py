@@ -2,22 +2,23 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
-from pprint import pprint
-import code
+
+import sys, code, readline
 from decimal import Decimal
-import readline
 from rlcompleter import Completer
 
 from cement.core import foundation, handler, controller
 from twisted.internet import reactor
 
 from .protocol import get_rates
+from pycnb import version
 
 class MainController(controller.CementBaseController):
     class Meta:
         description = 'PyCNB entry point'
         arguments = [
             (['-i', '--interactive'], dict(action='store_true')),
+            (['-v', '--version'], dict(action='store_true')),
         ]
 
     def get_callbacks(self):
@@ -26,8 +27,14 @@ class MainController(controller.CementBaseController):
         else:
             return [self.print_all]
 
+    def version(self):
+        print(version)
+
     @controller.expose()
     def default(self):
+        if self.pargs.version:
+            return self.version()
+
         d = get_rates(reactor)
         for cb in self.get_callbacks():
             d.addCallback(cb)
@@ -39,11 +46,19 @@ class MainController(controller.CementBaseController):
         ns['D'] = Decimal
         return ns
 
+    def _get_banner(self):
+        cprt = 'Type "help", "copyright", "credits" or "license" for more information.'
+        banner = "Python %s on %s\n%s\n" % (sys.version, sys.platform,
+            cprt)
+        # ^ standard banner made by `code.interact`
+        banner += "PyCNB v{0}".format(version)
+        return banner
+
     def interact(self, ns):
         c = Completer(ns)
         readline.set_completer(c.complete)
         readline.parse_and_bind("tab: complete")
-        code.interact(local=ns)
+        code.interact(self._get_banner(), local=ns)
 
     def print_all(self, rates):
         for c,r in rates.items():

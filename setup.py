@@ -2,12 +2,11 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import setup, find_packages
-
-__version__ = '0.0.3'
+from pycnb import version
 
 setup(
     name='pycnb',
-    version=__version__,
+    version=version,
     description='Library, CLI and Twisted protocol for `Czech National Bank daily rates',
     author='Jan Matejka',
     author_email='yac@blesmrt.net',
