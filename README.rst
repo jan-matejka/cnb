@@ -1,11 +1,12 @@
+#####
 PyCNB
-======
+#####
 Access cnb.cz daily rates with the comfort of your command line
 
 CLI and Twisted protocol for `Czech National Bank daily rates <http://www.cnb.cz/cs/index.html>`_.
 
 Usage
-=====
+#####
 
 from shell::
 
@@ -41,3 +42,20 @@ from code::
     from pycnb.protocol import get_rates
     d = get_rates(reactor)
     d.addCallback(process_rates)
+
+Install
+#######
+
+pypi::
+
+    $ pip install pycnb
+
+gentoo::
+
+    $ emerge pycnb
+
+Official Upstream
+#################
+
+You can find the website, Issue/bug tracker and git/tarball sources at
+`github <https://github.com/yaccz/pycnb>`_
