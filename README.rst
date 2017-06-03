@@ -1,6 +1,9 @@
 #####
 PyCNB
 #####
+
+pycnb has been deprecated in favor of https://github.com/yaccz/cnb
+
 Access cnb.cz daily rates with the comfort of your command line
 
 CLI and Twisted protocol for `Czech National Bank daily rates <http://www.cnb.cz/cs/index.html>`_.
