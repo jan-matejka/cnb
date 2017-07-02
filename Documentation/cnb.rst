@@ -48,7 +48,7 @@ XDG_CACHE_HOME
   as defined by
   `XDG Base Directory Specification v0.8 <https://standards.freedesktop.org/basedir-spec/basedir-spec-0.8.html>`__
 
-CNB_CACHE
+CNB_CACHE_HOME
   overrides XDG_CACHE_HOME for cnb
 
 CNB_URL
