@@ -5,6 +5,6 @@
   $ cnb path local-rates
   /foo/cnb/rates
 
-  $ export CNB_CACHE=/foo
+  $ export CNB_CACHE_HOME=/foo
   $ cnb path local-rates
   /foo/rates

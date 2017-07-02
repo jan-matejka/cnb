@@ -20,7 +20,7 @@ PATHS
 local-rates
   path to the ``CNB_URL`` local cache file.
 
-  Determined by ``CNB_CACHE``, ``XDG_CACHE_HOME``, ``HOME`` in order.
+  Determined by ``CNB_CACHE_HOME``, ``XDG_CACHE_HOME``, ``HOME`` in order.
 
 SEE ALSO
 ========

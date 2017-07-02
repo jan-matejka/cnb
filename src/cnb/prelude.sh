@@ -47,3 +47,6 @@ function cmd-dispatch {
   check-executable $cmd
   exec $cmd "$@"
 }
+
+export CNB_URL=${CNB_URL:-https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.txt}
+export CNB_LOCAL_RATES=${CNB_CACHE_HOME}/rates

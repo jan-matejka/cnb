@@ -9,6 +9,8 @@ LIBDIR   ?= $(DESTDIR)$(PREFIX)/lib
 BINDIR   ?= $(DESTDIR)$(PREFIX)/bin
 MANDIR   ?= $(DESTDIR)$(PREFIX)/man/man1
 
+CHECK_PATH = $(PWD)/$(BROOTDIR)/fakeroot/usr/local/bin:/bin:/usr/bin:/usr/local/bin
+
 BROOTDIR   = _build
 BLIBDIR    = $(BROOTDIR)/lib
 BBINDIR    = $(BROOTDIR)/bin
@@ -70,4 +72,6 @@ clean:
 .PHONY: check
 check: build
 
-	cram $(CRAMOPTS) $(CRAM_PATH)
+	mkdir -p $(BROOTDIR)/fakeroot
+	DESTDIR=$(BROOTDIR)/fakeroot $(MAKE) install
+	env -i PATH=$(CHECK_PATH) cram $(CRAMOPTS) $(CRAM_PATH)
