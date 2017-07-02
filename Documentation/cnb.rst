@@ -87,4 +87,6 @@ Runtime
 
 * curl
 
+* ``xdgenv <https://github.com/yaccz/xdgenv>``
+
 .. include:: common-foot.rst
