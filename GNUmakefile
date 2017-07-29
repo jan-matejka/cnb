@@ -18,8 +18,8 @@ BMANDIR    = $(BROOTDIR)/man/man1
 
 DIRS = $(BLIBDIR) $(BBINDIR)
 
-CMDS = $(patsubst src/cnb/%.sh,%,$(shell echo src/cnb/*))
-MANS = $(patsubst Documentation/cnb/%.rst,cnb-%.1,$(shell echo Documentation/cnb/*))
+CMDS = $(patsubst src/cnb/%.sh,%,$(wildcard src/cnb/*))
+MANS = $(patsubst Documentation/cnb/%.rst,cnb-%.1,$(wildcard Documentation/cnb/*))
 
 BCMDS = $(BBINDIR)/cnb   $(addprefix $(BBINDIR)/cnb-,$(CMDS))
 BMANS = $(BMANDIR)/cnb.1 $(addprefix $(BMANDIR)/,$(MANS))
