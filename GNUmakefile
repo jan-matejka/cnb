@@ -1,6 +1,7 @@
 .DEFAULT_GOAL := build
 CXX ?= c++
-CRAMOPTS ?= --shell=/usr/bin/zsh
+CRAM_OPTS_EXTRA ?=
+CRAMOPTS ?= -s zsh $(CRAM_OPTS_EXTRA)
 CRAM_ROOT ?= cram
 CRAM_PATH ?= $(CRAM_ROOT)
 
@@ -8,8 +9,6 @@ PREFIX   ?= /usr/local
 LIBDIR   ?= $(DESTDIR)$(PREFIX)/lib
 BINDIR   ?= $(DESTDIR)$(PREFIX)/bin
 MANDIR   ?= $(DESTDIR)$(PREFIX)/man/man1
-
-CHECK_PATH = $(PWD)/$(BROOTDIR)/fakeroot/usr/local/bin:/bin:/usr/bin:/usr/local/bin
 
 BROOTDIR   = _build
 BLIBDIR    = $(BROOTDIR)/lib
@@ -66,7 +65,7 @@ $(MANDIR)/%: $(BMANDIR)/%
 .PHONY: clean
 clean:
 
-	$(RM) -r $(BROOTDIR) $(CRAM_ROOT)/*.t.err
+	$(RM) -r $(BROOTDIR)
 
 
 .PHONY: check
@@ -74,4 +73,4 @@ check: build
 
 	mkdir -p $(BROOTDIR)/fakeroot
 	DESTDIR=$(BROOTDIR)/fakeroot $(MAKE) install
-	env -i PATH=$(CHECK_PATH) cram $(CRAMOPTS) $(CRAM_PATH)
+	PATH="$(shell pwd)/$(BROOTDIR)/fakeroot$(PREFIX)/bin:$(PATH)" dram $(CRAMOPTS) $(CRAM_PATH)
