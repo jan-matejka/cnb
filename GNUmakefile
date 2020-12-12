@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := build
 CXX ?= c++
-CRAMOPTS ?= --shell=/usr/bin/zsh
+CRAMOPTS ?= -s /usr/bin/zsh -T
 CRAM_ROOT ?= cram
 CRAM_PATH ?= $(CRAM_ROOT)
 
@@ -9,7 +9,7 @@ LIBDIR   ?= $(DESTDIR)$(PREFIX)/lib
 BINDIR   ?= $(DESTDIR)$(PREFIX)/bin
 MANDIR   ?= $(DESTDIR)$(PREFIX)/man/man1
 
-CHECK_PATH = $(PWD)/$(BROOTDIR)/fakeroot/usr/local/bin:/bin:/usr/bin:/usr/local/bin
+CHECK_PATH = $(PWD)/$(BROOTDIR)/fakeroot/usr/local/bin:/bin:/usr/bin:/usr/local/bin:/home/yac/.local/venv/py3/bin:/home/yac/.local/bin
 
 BROOTDIR   = _build
 BLIBDIR    = $(BROOTDIR)/lib
@@ -74,4 +74,4 @@ check: build
 
 	mkdir -p $(BROOTDIR)/fakeroot
 	DESTDIR=$(BROOTDIR)/fakeroot $(MAKE) install
-	env -i PATH=$(CHECK_PATH) cram $(CRAMOPTS) $(CRAM_PATH)
+	env -i PATH=$(CHECK_PATH) dram $(CRAMOPTS) $(CRAM_PATH)
