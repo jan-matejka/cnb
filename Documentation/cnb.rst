@@ -1,8 +1,8 @@
 CNB
 ###
 
-http://cnb.cz daily rates in your command line
-----------------------------------------------
+http://cnb.cz daily czech currency exchange rates in your command line
+----------------------------------------------------------------------
 
 :Manual section: 1
 :Date: 2017-06-03
