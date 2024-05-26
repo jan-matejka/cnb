@@ -1,9 +1,9 @@
 .DEFAULT_GOAL := build
 CXX ?= c++
-CRAM_OPTS_EXTRA ?=
-CRAMOPTS ?= -s zsh $(CRAM_OPTS_EXTRA)
-CRAM_ROOT ?= cram
-CRAM_PATH ?= $(CRAM_ROOT)
+DRAM_OPTS_EXTRA ?=
+DRAMOPTS ?= -s zsh $(DRAM_OPTS_EXTRA)
+DRAM_ROOT ?= dram
+DRAM_PATH ?= $(DRAM_ROOT)
 
 PREFIX   ?= /usr/local
 LIBDIR   ?= $(DESTDIR)$(PREFIX)/lib
@@ -73,4 +73,4 @@ check: build
 
 	mkdir -p $(BROOTDIR)/fakeroot
 	DESTDIR=$(BROOTDIR)/fakeroot $(MAKE) install
-	PATH="$(shell pwd)/$(BROOTDIR)/fakeroot$(PREFIX)/bin:$(PATH)" dram $(CRAMOPTS) $(CRAM_PATH)
+	PATH="$(shell pwd)/$(BROOTDIR)/fakeroot$(PREFIX)/bin:$(PATH)" dram $(DRAMOPTS) $(DRAM_PATH)
