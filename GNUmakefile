@@ -8,7 +8,7 @@ dram_path ?= $(dram_root)
 prefix   ?= /usr/local
 libdir   ?= $(DESTDIR)$(prefix)/lib
 bindir   ?= $(DESTDIR)$(prefix)/bin
-mandir   ?= $(DESTDIR)$(prefix)/man/man1
+mandir   ?= $(DESTDIR)$(prefix)/share/man/man1
 
 brootdir   = _build
 blibdir    = $(brootdir)/lib
