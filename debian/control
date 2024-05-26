@@ -1,0 +1,11 @@
+Source: cnb
+Maintainer: Jan Matějka <jan@matejka.ninja>
+Section: misc
+Priority: optional
+Standards-Version: 4.6.2
+Build-Depends: debhelper-compat (= 13), python3-docutils
+
+Package: cnb
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, zsh, curl, xdgenv
+Description: http://cnb.cz daily czech currency exchange rates in your command line
