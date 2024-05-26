@@ -74,3 +74,8 @@ check: build
 	mkdir -p $(brootdir)/fakeroot
 	DESTDIR=$(brootdir)/fakeroot $(MAKE) install
 	PATH="$(shell pwd)/$(brootdir)/fakeroot$(prefix)/bin:$(PATH)" dram $(dramopts) $(dram_path)
+
+.PHONY: syscheck
+syscheck:
+
+	dram $(dramopts) $(dram_path)
