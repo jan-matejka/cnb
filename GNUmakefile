@@ -1,63 +1,63 @@
 .DEFAULT_GOAL := build
 CXX ?= c++
-DRAM_OPTS_EXTRA ?=
-DRAMOPTS ?= -s zsh $(DRAM_OPTS_EXTRA)
-DRAM_ROOT ?= dram
-DRAM_PATH ?= $(DRAM_ROOT)
+dram_opts_extra ?=
+dramopts ?= -s zsh $(dram_opts_extra)
+dram_root ?= dram
+dram_path ?= $(dram_root)
 
-PREFIX   ?= /usr/local
-LIBDIR   ?= $(DESTDIR)$(PREFIX)/lib
-BINDIR   ?= $(DESTDIR)$(PREFIX)/bin
-MANDIR   ?= $(DESTDIR)$(PREFIX)/man/man1
+prefix   ?= /usr/local
+libdir   ?= $(DESTDIR)$(prefix)/lib
+bindir   ?= $(DESTDIR)$(prefix)/bin
+mandir   ?= $(DESTDIR)$(prefix)/man/man1
 
-BROOTDIR   = _build
-BLIBDIR    = $(BROOTDIR)/lib
-BBINDIR    = $(BROOTDIR)/bin
-BMANDIR    = $(BROOTDIR)/man/man1
+brootdir   = _build
+blibdir    = $(brootdir)/lib
+bbindir    = $(brootdir)/bin
+bmandir    = $(brootdir)/man/man1
 
-DIRS = $(BLIBDIR) $(BBINDIR)
+dirs = $(blibdir) $(bbindir)
 
-CMDS = $(patsubst src/cnb/%.sh,%,$(wildcard src/cnb/*))
-MANS = $(patsubst Documentation/cnb/%.rst,cnb-%.1,$(wildcard Documentation/cnb/*))
+cmds = $(patsubst src/cnb/%.sh,%,$(wildcard src/cnb/*))
+mans = $(patsubst Documentation/cnb/%.rst,cnb-%.1,$(wildcard Documentation/cnb/*))
 
-BCMDS = $(BBINDIR)/cnb   $(addprefix $(BBINDIR)/cnb-,$(CMDS))
-BMANS = $(BMANDIR)/cnb.1 $(addprefix $(BMANDIR)/,$(MANS))
+bcmds = $(bbindir)/cnb   $(addprefix $(bbindir)/cnb-,$(cmds))
+bmans = $(bmandir)/cnb.1 $(addprefix $(bmandir)/,$(mans))
 
-ICMDS = $(BINDIR)/cnb    $(addprefix $(BINDIR)/cnb-,$(CMDS))
-IMANS = $(MANDIR)/cnb.1  $(addprefix $(MANDIR)/,$(MANS))
+icmds = $(bindir)/cnb    $(addprefix $(bindir)/cnb-,$(cmds))
+imans = $(mandir)/cnb.1  $(addprefix $(mandir)/,$(mans))
 
 .PHONY: build
-build: $(BCMDS) $(BMANS)
+build: $(bcmds) $(bmans)
 
-$(BBINDIR)/cnb-%: src/cnb/%.sh
-
-	install -m755 -D $< $@
-
-$(BBINDIR)/cnb: src/cnb.sh
+$(bbindir)/cnb-%: src/cnb/%.sh
 
 	install -m755 -D $< $@
 
-$(BMANDIR):
+$(bbindir)/cnb: src/cnb.sh
+
+	install -m755 -D $< $@
+
+$(bmandir):
 
 	install -d $@
 
-$(BMANDIR)/cnb-%.1: Documentation/cnb/%.rst $(BMANDIR)
+$(bmandir)/cnb-%.1: Documentation/cnb/%.rst $(bmandir)
 
 	rst2man $< $@
 
-$(BMANDIR)/%.1: Documentation/$(subst cnb-,cnb/,%).rst $(BMANDIR)
+$(bmandir)/%.1: Documentation/$(subst cnb-,cnb/,%).rst $(bmandir)
 
 	rst2man $< $@
 
 
 .PHONY: install
-install: $(ICMDS) $(IMANS)
+install: $(icmds) $(imans)
 
-$(BINDIR)/%: $(BBINDIR)/%
+$(bindir)/%: $(bbindir)/%
 
 	install -m755 -D $< $@
 
-$(MANDIR)/%: $(BMANDIR)/%
+$(mandir)/%: $(bmandir)/%
 
 	install -m644 -D $< $@
 
@@ -65,12 +65,12 @@ $(MANDIR)/%: $(BMANDIR)/%
 .PHONY: clean
 clean:
 
-	$(RM) -r $(BROOTDIR)
+	$(RM) -r $(brootdir)
 
 
 .PHONY: check
 check: build
 
-	mkdir -p $(BROOTDIR)/fakeroot
-	DESTDIR=$(BROOTDIR)/fakeroot $(MAKE) install
-	PATH="$(shell pwd)/$(BROOTDIR)/fakeroot$(PREFIX)/bin:$(PATH)" dram $(DRAMOPTS) $(DRAM_PATH)
+	mkdir -p $(brootdir)/fakeroot
+	DESTDIR=$(brootdir)/fakeroot $(MAKE) install
+	PATH="$(shell pwd)/$(brootdir)/fakeroot$(prefix)/bin:$(PATH)" dram $(dramopts) $(dram_path)
