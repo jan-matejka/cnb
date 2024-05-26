@@ -1,5 +1,4 @@
 .DEFAULT_GOAL := build
-CXX ?= c++
 dram_opts_extra ?=
 dramopts ?= -s zsh $(dram_opts_extra)
 dram_root ?= dram
