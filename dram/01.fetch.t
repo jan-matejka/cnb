@@ -1,21 +1,24 @@
 setup 0
 =======
 
-  $ . ${TESTDIR}/setup
+  $ export HOME=$(pwd)/home
 
   $ export LOCAL=$(cnb path local-rates)
   $ test -f $LOCAL
   [1]
 
-  $ export SRC="${CRAMTMP}/${TESTFILE}/fake-src"
+  $ export SRC="$(pwd)/fake-src"
   $ export CNB_URL="file://${SRC}"
   $ echo "foo" >> $SRC
+  $ cat $SRC
+  foo
 
 fetch first
 ===========
 
   $ cnb fetch
-  $ cat ${LOCAL}
+  $ test -f $LOCAL
+  $ cat $LOCAL
   foo
 
 setup 1

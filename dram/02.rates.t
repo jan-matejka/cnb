@@ -63,7 +63,7 @@ conversions fallback to using expired local-rates
   $ cnb to USD 100
   curl: (6) Could not resolve host: example.invalid
   cnb-fetch: fatal: curl failed
-  cnb-rate: error: using cached local-rates from Fri Jun  2 02:20:50 GMT 2017
+  cnb-rate: error: using cached local-rates from Fri Jun  2 02:20:50 UTC 2017
   4.25
 
 fetch fail without local-rates
